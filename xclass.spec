@@ -4,7 +4,7 @@
 Summary: GUI toolkit resembling Windows(TM) 95
 Name: xclass
 Version: 0.9.2
-Release: %mkrel 1
+Release: %mkrel 2
 Source0: %{name}-%{version}.tar.bz2
 Patch0: xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
@@ -33,7 +33,7 @@ written in C++.
 
 %package -n %{libname}-devel
 Summary: Xclass is a Win95-looking GUI toolkit
-Group: System/Libraries
+Group: Development/C++
 Provides: %{name}-devel = %{version}
 Provides: lib%{name}-devel = %{version}
 Requires: %{libname} = %{version}
