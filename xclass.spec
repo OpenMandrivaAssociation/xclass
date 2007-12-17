@@ -12,7 +12,6 @@ Patch1:	xclass-0.9.2-gcc40.patch
 Url:	http://sourceforge.net/projects/xclass/
 License: LGPL
 Group: System/Libraries
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
 BuildRequires: X11-devel xpm-devel
 Requires: %{libname}
 Provides: %{name}-icons
