@@ -23,7 +23,7 @@ Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is
 written in C++.
 
 %package -n %{libname}
-Summary: Xclass is a Win95-looking GUI toolkit
+Summary: Win95-looking GUI toolkit
 Group: System/Libraries
 Requires: %{name}
 
@@ -32,7 +32,7 @@ Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is
 written in C++.
 
 %package -n %{libname}-devel
-Summary: Xclass is a Win95-looking GUI toolkit
+Summary: Win95-looking GUI toolkit
 Group: Development/C++
 Provides: %{name}-devel = %{version}
 Provides: lib%{name}-devel = %{version}
