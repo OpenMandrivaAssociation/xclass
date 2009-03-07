@@ -4,7 +4,7 @@
 Summary: GUI toolkit resembling Windows(TM) 95
 Name: xclass
 Version: 0.9.2
-Release: %mkrel 4
+Release: %mkrel 5
 Source0: %{name}-%{version}.tar.bz2
 Patch0: xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
