@@ -1,10 +1,11 @@
 %define major	0
 %define libname	%mklibname %{name} %{major}
+%define develname %mklibname -d %name
 
 Summary: GUI toolkit resembling Windows(TM) 95
 Name: xclass
 Version: 0.9.2
-Release: %mkrel 7
+Release: %mkrel 8
 Source0: %{name}-%{version}.tar.bz2
 Patch0: xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
@@ -13,7 +14,10 @@ Url:	http://sourceforge.net/projects/xclass/
 License: LGPL
 Group: System/Libraries
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: X11-devel xpm-devel
+BuildRequires: libx11-devel
+BuildRequires: libxpm-devel
+BuildRequires: libxext-devel
+BuildRequires: mesaglu-devel
 Requires: %{libname}
 Provides: %{name}-icons
 Obsoletes: %{name}-icons
@@ -31,15 +35,16 @@ Requires: %{name}
 Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is 
 written in C++.
 
-%package -n %{libname}-devel
+%package -n %{develname}
 Summary: Win95-looking GUI toolkit
 Group: Development/C++
+Obsoletes: %{_lib}xclass0-devel < 0.9.2-9
 Provides: %{name}-devel = %{version}
 Provides: lib%{name}-devel = %{version}
 Requires: %{libname} = %{version}
 
-%description -n %{libname}-devel
-Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is 
+%description -n %{develname}
+Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is
 written in C++.
 
 This package contains headers and static libraries to develop program using
@@ -61,7 +66,7 @@ perl -pi -e "s,/usr/local/xclass,/,g" lib/libxclass/Makefile.in lib/libxclass/Ma
 # Needed for x86-64 build
 export CFLAGS="$RPM_OPT_FLAGS -DPIC -fPIC"
 export CXXFLAGS="$CFLAGS"
-%configure --enable-debug=no --prefix=%_prefix --libdir=%_libdir --sysconfdir=%_sysconfdir
+%configure2_5x --enable-debug=no
 %make
 %make shared
 
@@ -114,7 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %{_libdir}/*.so.*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
 %doc doc/Programming.notes doc/INSTALL doc/Layout.notes
 %_bindir/xc-config
