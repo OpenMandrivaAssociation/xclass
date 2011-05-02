@@ -5,7 +5,7 @@
 Summary: GUI toolkit resembling Windows(TM) 95
 Name: xclass
 Version: 0.9.2
-Release: %mkrel 8
+Release: %mkrel 9
 Source0: %{name}-%{version}.tar.bz2
 Patch0: xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
@@ -123,7 +123,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc doc/Programming.notes doc/INSTALL doc/Layout.notes
 %_bindir/xc-config
-%multiarch %multiarch_bindir/xc-config
+%multiarch_bindir/xc-config
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.a
