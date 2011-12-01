@@ -71,30 +71,30 @@ export CXXFLAGS="$CFLAGS"
 %make shared
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_bindir} $RPM_BUILD_ROOT%{_libdir} $RPM_BUILD_ROOT%{_includedir} 
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir} $RPM_BUILD_ROOT%{_datadir}/xclass/icons
-make etc_dir=$RPM_BUILD_ROOT%{_sysconfdir} config_dir=$RPM_BUILD_ROOT%{_bindir} \
-  doc_dir=$RPM_BUILD_ROOT%{_docdir} header_dir=$RPM_BUILD_ROOT%{_includedir}/xclass lib_dir=$RPM_BUILD_ROOT%{_libdir} \
-  icon_dir=$RPM_BUILD_ROOT%{_datadir}/xclass/icons install
-make etc_dir=$RPM_BUILD_ROOT%{_sysconfdir} config_dir=$RPM_BUILD_ROOT%{_bindir} \
-  doc_dir=$RPM_BUILD_ROOT%{_docdir} header_dir=$RPM_BUILD_ROOT%{_includedir}/xclass lib_dir=$RPM_BUILD_ROOT%{_libdir} \
-  icon_dir=$RPM_BUILD_ROOT%{_datadir}/xclass/icons install_shared
-ln -sf libxclass.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libxclass.so.%{major}
-ln -sf libxclass.so.%{version} $RPM_BUILD_ROOT%{_libdir}/libxclass.so
+rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_bindir} %{buildroot}%{_libdir} %{buildroot}%{_includedir} 
+mkdir -p %{buildroot}%{_sysconfdir} %{buildroot}%{_datadir}/xclass/icons
+make etc_dir=%{buildroot}%{_sysconfdir} config_dir=%{buildroot}%{_bindir} \
+  doc_dir=%{buildroot}%{_docdir} header_dir=%{buildroot}%{_includedir}/xclass lib_dir=%{buildroot}%{_libdir} \
+  icon_dir=%{buildroot}%{_datadir}/xclass/icons install
+make etc_dir=%{buildroot}%{_sysconfdir} config_dir=%{buildroot}%{_bindir} \
+  doc_dir=%{buildroot}%{_docdir} header_dir=%{buildroot}%{_includedir}/xclass lib_dir=%{buildroot}%{_libdir} \
+  icon_dir=%{buildroot}%{_datadir}/xclass/icons install_shared
+ln -sf libxclass.so.%{version} %{buildroot}%{_libdir}/libxclass.so.%{major}
+ln -sf libxclass.so.%{version} %{buildroot}%{_libdir}/libxclass.so
 
 # fix reference to icons dir
 perl -pi -e "s,(^icon dir).+,\1 = %{_datadir}/xclass/icons," \
-  $RPM_BUILD_ROOT%{_sysconfdir}/xclassrc
+  %{buildroot}%{_sysconfdir}/xclassrc
 
 # remove unpackaged files
-rm -f  $RPM_BUILD_ROOT%{_datadir}/xclass/icons/Makefile{,.in}
-rm -rf $RPM_BUILD_ROOT%{_datadir}/doc
+rm -f  %{buildroot}%{_datadir}/xclass/icons/Makefile{,.in}
+rm -rf %{buildroot}%{_datadir}/doc
 
-%multiarch_binaries $RPM_BUILD_ROOT%{_bindir}/xc-config
+%multiarch_binaries %{buildroot}%{_bindir}/xc-config
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
