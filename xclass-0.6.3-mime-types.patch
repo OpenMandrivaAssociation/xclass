@@ -1,0 +1,28 @@
+--- xclass-0.6.3/lib/libxclass/OResourcePool.cc.mime-types	2001-11-24 06:43:53.000000000 -0500
++++ xclass-0.6.3/lib/libxclass/OResourcePool.cc	2002-12-05 04:07:10.000000000 -0500
+@@ -304,6 +304,8 @@ OResourcePool::OResourcePool(const OXCli
+ 
+   char mimerc[PATH_MAX];
+   sprintf(mimerc, "%s/etc/%s", _userRoot, config.mime_type);
++  if (access(mimerc, R_OK) != 0)
++	  sprintf(mimerc, "%s/etc/%s", OX_DEFAULT_ROOT, config.mime_type);
+ 
+   _MimeTypeList = new OMimeTypes((OXClient *)_client, mimerc);
+ }
+@@ -361,7 +363,7 @@ int OResourcePool::SetDefaults(Sconfig *
+   strcpy(conf->icon_pool, OX_DEFAULT_POOL);
+   strcpy(conf->sys_resource_root, OX_DEFAULT_ROOT);
+   strcpy(conf->user_resource_root, ".xclass");
+-  strcpy(conf->mime_type, "mime.types");
++  strcpy(conf->mime_type, "xclass-mime.types");
+ 
+   return True;
+ }
+--- xclass-0.6.3/doc/xclassrc.mime-types	2000-08-20 09:11:21.000000000 -0400
++++ xclass-0.6.3/doc/xclassrc	2002-12-05 04:08:44.000000000 -0500
+@@ -27,4 +27,4 @@ icon dir = /usr/local/xclass/icons
+ 
+ ;background pixmap = login-bckgnd.xpm
+ 
+-mime type file = mime.types
++mime type file = xclass-mime.types
