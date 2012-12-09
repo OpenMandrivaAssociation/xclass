@@ -1,47 +1,47 @@
+# Debug package is empty and rpmlint rejects build
+%define _enable_debug_packages %{nil}
+%define debug_package %{nil}
+
 %define major	0
 %define libname	%mklibname %{name} %{major}
-%define develname %mklibname -d %name
+%define develname %mklibname -d %{name}
 
-Summary: GUI toolkit resembling Windows(TM) 95
-Name: xclass
-Version: 0.9.2
-Release: %mkrel 9
-Source0: %{name}-%{version}.tar.bz2
-Patch0: xclass-0.6.3-mime-types.patch
+Summary:	GUI toolkit resembling Windows(TM) 95
+Name:		xclass
+Version:	0.9.2
+Release:	12
+License:	LGPL
+Group:		System/Libraries
+Url:		http://sourceforge.net/projects/xclass/
+Source0:	%{name}-%{version}.tar.bz2
+Patch0:		xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
-Patch1:	xclass-0.9.2-gcc40.patch
-Url:	http://sourceforge.net/projects/xclass/
-License: LGPL
-Group: System/Libraries
-BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-BuildRequires: libx11-devel
-BuildRequires: libxpm-devel
-BuildRequires: libxext-devel
-BuildRequires: mesaglu-devel
-Requires: %{libname}
-Provides: %{name}-icons
-Obsoletes: %{name}-icons
+Patch1:		xclass-0.9.2-gcc40.patch
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xpm)
+BuildRequires:	pkgconfig(xext)
+BuildRequires:	pkgconfig(glu)
+Requires:	%{libname} = %{version}-%{release}
 
 %description
 Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is 
 written in C++.
 
 %package -n %{libname}
-Summary: Win95-looking GUI toolkit
-Group: System/Libraries
-Requires: %{name}
+Summary:	Win95-looking GUI toolkit
+Group:		System/Libraries
+Requires:	%{name}
 
 %description -n %{libname}
 Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is 
 written in C++.
 
 %package -n %{develname}
-Summary: Win95-looking GUI toolkit
-Group: Development/C++
-Obsoletes: %{_lib}xclass0-devel < 0.9.2-9
-Provides: %{name}-devel = %{version}
-Provides: lib%{name}-devel = %{version}
-Requires: %{libname} = %{version}
+Summary:	Win95-looking GUI toolkit
+Group:		Development/C++
+Provides:	%{name}-devel = %{version}
+Provides:	lib%{name}-devel = %{version}
+Requires:	%{libname} = %{version}
 
 %description -n %{develname}
 Xclass is a GUI toolkit resembling Windows 95. It is Xlib-based and is
@@ -64,14 +64,13 @@ perl -pi -e "s,/usr/local/xclass,/,g" lib/libxclass/Makefile.in lib/libxclass/Ma
 
 %build
 # Needed for x86-64 build
-export CFLAGS="$RPM_OPT_FLAGS -DPIC -fPIC"
+export CFLAGS="%{optflags} -DPIC -fPIC"
 export CXXFLAGS="$CFLAGS"
 %configure2_5x --enable-debug=no
 %make
 %make shared
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir} %{buildroot}%{_libdir} %{buildroot}%{_includedir} 
 mkdir -p %{buildroot}%{_sysconfdir} %{buildroot}%{_datadir}/xclass/icons
 make etc_dir=%{buildroot}%{_sysconfdir} config_dir=%{buildroot}%{_bindir} \
@@ -93,20 +92,7 @@ rm -rf %{buildroot}%{_datadir}/doc
 
 %multiarch_binaries %{buildroot}%{_bindir}/xc-config
 
-%clean
-rm -rf %{buildroot}
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-
 %files
-%defattr(-,root,root)
 %dir %{_datadir}/xclass
 %dir %{_datadir}/xclass/icons
 %{_datadir}/xclass/icons/*.xpm
@@ -116,14 +102,149 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/xclass-mime.types
 
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/*.so.*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %doc doc/Programming.notes doc/INSTALL doc/Layout.notes
-%_bindir/xc-config
-%multiarch_bindir/xc-config
+%{_bindir}/xc-config
+%{multiarch_bindir}/xc-config
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.a
+
+
+%changelog
+* Mon May 02 2011 Oden Eriksson <oeriksson@mandriva.com> 0.9.2-9mdv2011.0
++ Revision: 661758
+- multiarch fixes
+
+* Thu Dec 23 2010 Funda Wang <fwang@mandriva.org> 0.9.2-8mdv2011.0
++ Revision: 623983
+- new devel package name policy
+
+* Sat Dec 04 2010 Oden Eriksson <oeriksson@mandriva.com> 0.9.2-7mdv2011.0
++ Revision: 608195
+- rebuild
+
+* Wed Mar 17 2010 Oden Eriksson <oeriksson@mandriva.com> 0.9.2-6mdv2010.1
++ Revision: 524376
+- rebuilt for 2010.1
+
+* Sat Mar 07 2009 Antoine Ginies <aginies@mandriva.com> 0.9.2-5mdv2009.1
++ Revision: 351231
+- rebuild
+
+* Wed Jun 18 2008 Thierry Vignaud <tv@mandriva.org> 0.9.2-4mdv2009.0
++ Revision: 226018
+- rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Mon Feb 18 2008 Thierry Vignaud <tv@mandriva.org> 0.9.2-3mdv2008.1
++ Revision: 171182
+- rebuild
+- fix "foobar is blabla" summary (=> "blabla") so that it looks nice in rpmdrake
+- kill re-definition of %%buildroot on Pixel's request
+
+  + Olivier Blin <oblin@mandriva.com>
+    - restore BuildRoot
+
+* Tue Jun 12 2007 Adam Williamson <awilliamson@mandriva.org> 0.9.2-2mdv2008.0
++ Revision: 38342
+- correct devel package group (#28160)
+
+* Sat May 12 2007 Adam Williamson <awilliamson@mandriva.org> 0.9.2-1mdv2008.0
++ Revision: 26421
+- improve summary / descriptions
+- rename xclass-icons to xclass, move config files to it (comply with lib policy)
+- add patch from SUSE to fix build with gcc 4.x
+- drop all patches except mime types: no longer relevant
+- clean spec
+- 0.9.2
+- Import xclass
+
+
+
+* Mon May 08 2006 Stefan van der Eijk <stefan@eijk.nu> 0.6.3-15mdk
+- rebuild for sparc
+
+* Wed Feb  9 2005 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-14mdk
+- multiarch
+
+* Tue Jul 20 2004 Christiaan Welvaart <cjw@daneel.dyndns.org> 0.6.3-13mdk
+- patch3: remove defines that interfere with building apps using this lib
+- patch4: fix some warnings
+
+* Fri Jun  4 2004  <lmontel@n2.mandrakesoft.com> 0.6.3-12mdk
+- Rebuild
+
+* Thu Feb 26 2004 Olivier Thauvin <thauvin@aerov.jussieu.fr> 0.6.3-11mdk
+- fix DIRM
+
+* Fri Sep 19 2003 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-10mdk
+- mklibname, more C++ fixes
+
+* Thu Dec  5 2002 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-9mdk
+- We do need icons, also fix /etc/xclassrc and OX_DEFAULT_ROOT. Likewise for
+  xclass mime.types. How did people usually test this package ?!?
+
+* Wed Dec  4 2002 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-8mdk
+- Make it lib64 aware
+- Remove unpackaged files, maintainer will check where icons et
+  al. were supposed to be used, if any use is found
+
+* Thu Aug 29 2002 Daouda LO <daouda@mandrakesoft.com> 0.6.3-7mdk
+- obsoleted xclass for 8.2 <-> 9.0 upgrades.
+
+* Wed Aug 14 2002 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-6mdk
+- Automated rebuild with gcc 3.2-0.3mdk
+
+* Thu Jul 25 2002 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.3-5mdk
+- Automated rebuild with gcc3.2
+
+* Mon Jul 08 2002 Geoffrey Lee <snailtalk@mandrakesoft.com> 0.6.3-4mdk
+- Build PIC on all architectures.
+
+* Mon Jun 17 2002 Daouda LO <daouda@mandrakesoft.com> 0.6.3-3mdk
+- upload all xclass packages. 
+- obsoletes/provides xclass.
+
+* Mon Jun 17 2002 Geoffrey Lee <snailtalk@mandrakesoft.com> 0.6.3-2mdk
+- Remove requires for lib package created from nuking the main package.
+
+* Mon Jun 17 2002 Geoffrey Lee <snailtalk@mandrakesoft.com> 0.6.3-1mdk
+- New and shiny source.
+- Updated C++ workarounds.
+- Currently broken on the Alpha because of some gp relocation symbols
+  which I don't really know why.
+
+* Sat Jun 15 2002 Stefan van der Eijk <stefan@eijk.nu> 0.6.2-3mdk
+- fix provides / requires on lib package
+
+* Tue May 28 2002 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 0.6.2-2mdk
+- Patch0: ISO C++ fixes and workarounds. They should really use
+  iterators instead. Also know that there is no conversion from a
+  vector<> element pointer to a vector<>::iterator...
+
+* Wed Mar 20 2002 Daouda LO <daouda@mandrakesoft.com> 0.6.2-1mdk
+- release 0.6.2
+
+* Tue Dec  4 2001 Daouda LO <daouda@mandrakesoft.com> 0.5.4-5mdk
+- add xclass package
+- cleanup 
+
+* Tue Nov 27 2001 Daouda LO <daouda@mandrakesoft.com> 0.5.4-3mdk
+- revert back to 0.5.4.
+
+* Sat Nov 24 2001 Daouda Lo <daouda@mandrakesoft.com> 0.6.1-1mdk
+- release 0.6.1
+
+* Sun Jul 01 2001 Stefan van der Eijk <stefan@eijk.nu> 0.5.4-2mdk
+- BuildRequires: xpm-devel
+
+* Tue Jun 12 2001 Frederic Crozat <fcrozat@mandrakesoft.com> 0.5.4-1mdk
+- First Mandrake package
+
+
+# end of file
