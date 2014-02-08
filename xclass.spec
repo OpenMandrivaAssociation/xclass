@@ -9,7 +9,7 @@
 Summary:	GUI toolkit resembling Windows(TM) 95
 Name:		xclass
 Version:	0.9.2
-Release:	13
+Release:	14
 License:	LGPL
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/xclass/
