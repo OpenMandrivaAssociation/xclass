@@ -1,6 +1,7 @@
 # Debug package is empty and rpmlint rejects build
 %define _enable_debug_packages %{nil}
 %define debug_package %{nil}
+%define _disable_lto 1
 
 %define major	0
 %define libname	%mklibname %{name} %{major}
