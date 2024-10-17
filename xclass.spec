@@ -13,7 +13,7 @@ Version:	0.9.2
 Release:	23
 License:	LGPL
 Group:		System/Libraries
-Url:		http://sourceforge.net/projects/xclass/
+Url:		https://sourceforge.net/projects/xclass/
 Source0:	%{name}-%{version}.tar.bz2
 Source100:	%{name}.rpmlintrc
 Patch0:		xclass-0.6.3-mime-types.patch
