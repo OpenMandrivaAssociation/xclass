@@ -19,6 +19,11 @@ Source100:	%{name}.rpmlintrc
 Patch0:		xclass-0.6.3-mime-types.patch
 # From SUSE OSS-Factory
 Patch1:		xclass-0.9.2-gcc40.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(xext)
